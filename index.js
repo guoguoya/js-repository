@@ -160,6 +160,7 @@ var iteratorType = {
   'function': ,
   'array': ,
 }
+
 function makeIterator() {
   var len = arguments.length; 
   var 
@@ -256,3 +257,13 @@ function ScrollController() {
   
   return new controller().init(); 
 }
+
+/*普通的字符区别双字节和两个双字节 𠮷 length是读取字符的个数*/
+ strLen(text) {
+   let result = text.match(/[\s\S]/gu);
+   return result ? result.length : 0;
+}
+
+/*返回一个函数的名称*/
+let fnName = fn => fn.name ? fn.name : /^function\s([a-zA-Z0-9_]+)(\s+)\(/g.exec(fn.valueof())[1];
+
