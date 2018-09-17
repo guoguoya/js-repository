@@ -1,13 +1,3 @@
-
-////////////////////
-
-
-
-////////////////////
-
-
-
-
 //创建随机数函数
 function makeRandomNumber(baseNumber) {
   return function() {
@@ -17,19 +7,19 @@ function makeRandomNumber(baseNumber) {
 
 //创建范围选择
 function makeRangeType(rangeRow) {
-  var tot = rangeRow.reduce(function(tot, number){
+  let tot = rangeRow.reduce(function(tot, number){
     return tot + number;
   });
-  var getRandomNumber = makeRandomNumber(tot);
-  var range = rangeRow.reduce(function(ob, item, index){
+  let getRandomNumber = makeRandomNumber(tot);
+  let range = rangeRow.reduce(function(ob, item, index){
     ob[index] = ob[index - 1] + item;
     return ob;
   }, { "-1": 0 });
-  var len = rangeRow.length;
+
   return function() {
-    var num = getRandomNumber();
-    var pos = -1;
-    for (var i = 0 ; i < range.length; i++) {
+    let num = getRandomNumber();
+    let pos = -1;
+    for (let i = 0 ; i < range.length; i++) {
         if (num < range[i]) {
             pos = i;
             break;
@@ -45,7 +35,7 @@ function makeRangeType(rangeRow) {
 
 //js打开新的窗口(只有在同步的时候有效)
 function openWin(url) {
-  var dom = document.createElement('a');
+  let dom = document.createElement('a');
   dom.target = "_blank"
   dom.href = url;
   document.body.appendChild(dom);
@@ -54,7 +44,7 @@ function openWin(url) {
 
 //同上
 function openlink(url) {
-  var dom = document.createElement('a');
+  let dom = document.createElement('a');
   dom.href = url;
   document.body.appendChild(dom);
   dom.click();
@@ -62,11 +52,11 @@ function openlink(url) {
 
 //返回变量类型
 function getTypeof(param) {
-  var type = typeof param;
+  let type = typeof param;
   if (type != "object") {
     return type;
   }
-  var str = Object.prototype.toString.call(param).toLocaleLowerCase();
+  let str = Object.prototype.toString.call(param).toLocaleLowerCase();
   return str.slice(8, str.length - 1);
 }
 
@@ -85,9 +75,10 @@ function invariant(check, mes) {
 
 //创建单例
 function singleton(fn) {
-  var ob = null;  
+  let ob = null;
+
   return function() {
-      return ob || (ob = fn.apply.(this, arguments));
+      return ob || (ob = fn.apply(this, arguments));
   }
 }
 
@@ -104,13 +95,13 @@ function throttle(fn, duration) {
    * @type {Boolean}
    */
   
-  var flag = false; 
-  var delayFn = null;
+  let flag = false; 
+  let delayFn = null;
   //实质是间隔执行 重复操作时减少请求次数
 
   return function() { 
-    var self = this;
-    var args = arguments;
+    let self = this;
+    let args = arguments;
 
     if (!flag) {
       flag = true;
@@ -134,13 +125,13 @@ function throttle(fn, duration) {
  */
 
 function debounce(fn, delay) {
-  var flag = false; 
-  var delayFn = null;
+  let flag = false; 
+  let delayFn = null;
   //实质是以间隔时间判断是否在操作 重复操作时当重复操作结束后执行
 
   return function() { 
-    var self = this;
-    var args = arguments;
+    let self = this;
+    let args = arguments;
 
     if (!flag) {
       flag = true;
@@ -161,63 +152,66 @@ function debounce(fn, delay) {
  * 
  */
 
-function() {
-
-
+function optimizationDomInsert() {
+  console.log(true)
 }
-
 
 //防抖加节流
 
 //缓存fn数据构造器
 
-
-function proxy(fn) {
-  var cache = {};
+function proxyCbResult(fn) {
+  let cache = {};
 
   return function() {
-    var name = [].join.call(arguments, ',');  
-    return cache[name] || cache[name] = fn.apply(this, arguments);
+    let name = [].join.call(arguments, ',');  
+
+    if (cache[name]) {
+      return cache[name];
+    }
+
+    cache[name] = fn.apply(this, arguments);
+    return cache[name];
   }
 }
 
+
 //内部通用迭代器
-var iteratorType = {
-  'object': ,
-  'function': ,
-  'array': ,
+let iteratorType = {
+  'object': true,
+  'function': true,
+  'array': true,
 }
 
 function makeIterator() {
-  var len = arguments.length; 
-  var 
+  let len = arguments.length; 
+  let 
   if (len == 0) {
     return console.error('no params');
   }
 
   if (len == 1) {
-    var param = arguments[0];
-    var type = getTypeof(param);
+    let param = arguments[0];
+    let type = getTypeof(param);
   }
   
 }
 
 //dom 元素出现在页面时触发回调 基本思想观察者
 
-
 function ScrollController() {
-  var arr = [];
-  var $win = $(window);
-  var viewHeight = $win.height();
+  let arr = [];
+  let $win = $(window);
+  let viewHeight = $win.height();
 
-  var controller = function() {
+  let controller = function() {
     this.init();
   }
   
-  var proto = controller.prototype;
+  let proto = controller.prototype;
 
   proto.init = function() {
-    var self = this;
+    let self = this;
 
     $(window).on('scroll', function() {
         self.publish();
@@ -228,20 +222,20 @@ function ScrollController() {
 
   proto.publish = function() {
 
-    var scrollTop = $win.scrollTop() ;
-    var Items = this.getItems(scrollTop);
+    let scrollTop = $win.scrollTop() ;
+    let Items = this.getItems(scrollTop);
     Items.forEach(function(item, index){
-      var cb = item.cb;
+      let cb = item.cb;
       cb.apply(item.item);
     });
   }
 
   proto.getItems = function(scrollTop) {
-    var ret = [];
-    var newArr = [];
+    let ret = [];
+    let newArr = [];
     arr.forEach(function(item, index) {
-      var delayHeight = item.options.delayHeight;
-      if (item.top + item.height - delayHeight >= scrollTop && item.top + delayHeight + <= scrollTop + viewHeight) {
+      let delayHeight = item.options.delayHeight;
+      if (item.top + item.height - delayHeight >= scrollTop && item.top + delayHeight  <= scrollTop + viewHeight) {
         ret.push(item);
       } else {
         newArr.push(item);
@@ -258,7 +252,7 @@ function ScrollController() {
   };
 
   proto.add = function(str, callback, options) {
-    var $dom = $(str);
+    let $dom = $(str);
 
     if (!$dom.length) {
       console.error('no such dom');
@@ -271,7 +265,7 @@ function ScrollController() {
     }
 
     $dom.each(function(index, item){
-      var $item = $(item);
+      let $item = $(item);
       arr.push({
         item: item, 
         top: $item.offset().top,
@@ -286,9 +280,9 @@ function ScrollController() {
 }
 
 /*普通的字符区别双字节和两个双字节 𠮷 length是读取字符的个数*/
- strLen(text) {
-   let result = text.match(/[\s\S]/gu);
-   return result ? result.length : 0;
+function strLen(text) {
+  let result = text.match(/[\s\S]/gu);
+  return result ? result.length : 0;
 }
 
 /*返回一个函数的名称*/
@@ -412,7 +406,7 @@ function sum(...rest) {
     } else {
       let res = 0;
 
-      for (var i = 0; i < digs.length; i++) {
+      for (let i = 0; i < digs.length; i++) {
         res += parseInt(digs[i]);
       }
 
@@ -436,7 +430,7 @@ function deepMerge(...objArray) {
   for (let i = 1; i < objArray.length; i++) {
     for (prop in objArray[i]) {
       if (objArray[i].hasOwnProperty(prop)) {
-        if (isPlainObject(objArray[i][prop]) {
+        if (isPlainObject(objArray[i][prop])) {
           if (target[prop] == undefined) {
             target[prop] = {};
           }
@@ -455,9 +449,8 @@ function deepMerge(...objArray) {
 
 // 数据深拷贝
 // 目前只考虑 Object Array 原始类型
-
-
 // test1 let a = {a:1,b:2,c:[{a:1,b:1},{a:11, b:12}]};
+
 function deepDataCopy(obj) {
   let ret;
   let type = getTypeof(obj);
@@ -491,7 +484,6 @@ function deepDataCopy(obj) {
 }
 
 // 拓扑队列
-
 
 class AsyncArray {
   
@@ -543,10 +535,73 @@ class AsyncArray {
   }
 }
 
+// 契约类
+/**
+ * @description 用来约束注册行为和移除行为的一致性
+ */
 
-class hehe {
-  constructor() {
-    this.array = [];
+class completeOperator {
+  constructor(opts) {
+    try {
+      if (!this.isOptsCorrect(opts)) {
+        throw Error('Invalid parameter');
+      }
+
+      this.registList = Object.entries(opts).reduce((prev, [key, curItem]) => {
+        if (getType(curItem.regist) !== 'function') {
+          throw Error(`Invalid ${key} parameter regist.`);
+        }
+        prev.push(curItem.regist);
+        return prev;
+      },[]);
+  
+      this.removeList = Object.entries(opts).reduce((prev, [key, curItem]) => {
+        if (getType(curItem.remove) !== 'function') {
+          throw Error(`Invalid ${key} parameter remove.`);
+        }
+        prev.push(curItem.remove);
+        return prev;
+      },[]);
+
+      return this;
+    } catch(e) {
+      console.error(e);
+    }
+
+    return {};
+  }
+
+  isOptsCorrect(opts) {
+    const keys = Object.keys(opts); 
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = opts[keys[i]];
+
+      if (key.regist === undefined || key.remove === undefined) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  regist() {
+    this.registList.forEach((fn) => {
+      try {
+        fn();
+      } catch(e) {
+        console.error(`some worry with ${fn.toString()}`);
+      }
+    });
+  }
+
+  remove() {
+    this.removeList.reverse().forEach((fn) => {
+      try {
+        fn();
+      } catch(e) {
+        console.error(`some worry with ${fn.toString()}`);
+      }
+    }); 
   }
 }
-
